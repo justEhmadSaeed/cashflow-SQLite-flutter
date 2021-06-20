@@ -18,7 +18,10 @@ class _SignupScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text('Log In'),
+        // backgroundColor: Colors.lightBlueAccent,
+      ),
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: Padding(
