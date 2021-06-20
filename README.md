@@ -1,4 +1,4 @@
-# cash_flow_app
+# Cash Flow App
 
 A new Flutter project.
 
