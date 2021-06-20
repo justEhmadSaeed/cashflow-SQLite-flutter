@@ -1,3 +1,4 @@
+import 'package:cash_flow_app/Screens/HomeScreen.dart';
 import 'package:cash_flow_app/Screens/LoginScreen.dart';
 import 'package:cash_flow_app/Screens/SignupScreen.dart';
 import 'package:cash_flow_app/Screens/WelcomeScreen.dart';
@@ -15,15 +16,14 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Expense Flow',
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
-        textTheme: TextTheme(
-          bodyText2: TextStyle(color: Colors.white),
-        ),
-      ),
+          // custom theme data
+          ),
       initialRoute: WelcomeScreen.ROUTE,
       routes: {
         WelcomeScreen.ROUTE: (context) => WelcomeScreen(),
         SignupScreen.ROUTE: (context) => SignupScreen(),
         LoginScreen.ROUTE: (context) => LoginScreen(),
+        HomeScreen.ROUTE: (context) => HomeScreen(),
       },
     );
   }
