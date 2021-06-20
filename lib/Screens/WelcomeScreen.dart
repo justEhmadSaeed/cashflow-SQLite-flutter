@@ -4,15 +4,8 @@ import 'package:cash_flow_app/Screens/SignupScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
-class WelcomeScreen extends StatefulWidget {
-  const WelcomeScreen({Key? key}) : super(key: key);
+class WelcomeScreen extends StatelessWidget {
   static const ROUTE = '/WELCOME';
-  @override
-  _WelcomeScreenState createState() => _WelcomeScreenState();
-}
-
-class _WelcomeScreenState extends State<WelcomeScreen>
-    with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +30,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     TypewriterAnimatedText(
                       'Expense Flow App',
                       textStyle: TextStyle(
-                        fontSize: 45.0,
+                        fontSize: 35.0,
                         fontWeight: FontWeight.w900,
                       ),
                       speed: Duration(milliseconds: 150),
@@ -50,19 +43,25 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             SizedBox(
               height: 48.0,
             ),
-            RoundButton(
-              color: Colors.lightBlueAccent,
-              onPressed: () {
-                Navigator.pushNamed(context, LoginScreen.ROUTE);
-              },
-              title: 'Log In',
+            Hero(
+              tag: 'login',
+              child: RoundButton(
+                color: Colors.lightBlueAccent,
+                onPressed: () {
+                  Navigator.pushNamed(context, LoginScreen.ROUTE);
+                },
+                title: 'Log In',
+              ),
             ),
-            RoundButton(
-              color: Colors.blueAccent,
-              onPressed: () {
-                Navigator.pushNamed(context, SignupScreen.ROUTE);
-              },
-              title: 'Sign Up',
+            Hero(
+              tag: 'signup',
+              child: RoundButton(
+                color: Colors.blueAccent,
+                onPressed: () {
+                  Navigator.pushNamed(context, SignupScreen.ROUTE);
+                },
+                title: 'Sign Up',
+              ),
             ),
           ],
         ),
