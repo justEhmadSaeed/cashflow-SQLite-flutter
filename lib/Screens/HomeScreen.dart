@@ -1,4 +1,5 @@
 import 'package:cash_flow_app/Components/CustomDrawerHeader.dart';
+import 'package:cash_flow_app/Components/ExpenseViewTable.dart';
 import 'package:cash_flow_app/Components/UserData.dart';
 import 'package:cash_flow_app/DatabaseSchema.dart';
 import 'package:cash_flow_app/Screens/TransactionScreen.dart';
@@ -18,6 +19,8 @@ class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   String amount = '';
+  List expensesList = [];
+  List revenuesList = [];
   @override
   void initState() {
     super.initState();
@@ -33,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     final userData = ModalRoute.of(context)!.settings.arguments as UserData;
-    void getUserAmount() async {
+    void getDataFromDB() async {
       // Get device path of the database
       var path = join((await getDatabasesPath()), 'expenses.db');
       // Initialize DB UserTable static method
@@ -42,12 +45,22 @@ class _HomeScreenState extends State<HomeScreen>
           columns: [UserTable.columnAmount],
           where: '${UserTable.columnEmail} = ?',
           whereArgs: [userData.email]);
+      List expenses = await db.query(ExpenseTable.tableName,
+          columns: [
+            'rowid',
+            ExpenseTable.columnTitle,
+            ExpenseTable.columnAmount,
+            ExpenseTable.columnTimestamp,
+          ],
+          where: '${UserTable.columnEmail} = ?',
+          whereArgs: [userData.email]);
       setState(() {
         amount = userAmount[0]['amount'].toString();
+        expensesList = expenses;
       });
     }
 
-    getUserAmount();
+    if (amount.length == 0) getDataFromDB();
     return Scaffold(
       appBar: AppBar(
         title: Text('Home'),
@@ -126,8 +139,11 @@ class _HomeScreenState extends State<HomeScreen>
       ),
       body: TabBarView(
         controller: _tabController,
+        physics: NeverScrollableScrollPhysics(),
         children: [
-          Center(),
+          ExpenseViewTable(
+            expensesList: expensesList,
+          ),
           Center(),
           Center(),
         ],

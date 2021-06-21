@@ -23,3 +23,6 @@ const kTabViewHeadingStyle = TextStyle(
   fontWeight: FontWeight.bold,
 );
 const kRoundButtonTextStyle = TextStyle(fontSize: 20);
+
+const kDataColumnTextStyle =
+    TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
