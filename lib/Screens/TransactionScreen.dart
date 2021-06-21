@@ -50,7 +50,7 @@ class _TransactionScreenState extends State<TransactionScreen>
       });
     }
 
-    getUserAmount();
+    if (amount.length == 0) getUserAmount();
     return Scaffold(
       appBar: AppBar(
         title: Text('Transaction Operations'),
@@ -103,8 +103,8 @@ class _TransactionScreenState extends State<TransactionScreen>
                 size: 30,
               ),
               onTap: () {
-                Navigator.popUntil(
-                    context, ModalRoute.withName(HomeScreen.ROUTE));
+                Navigator.popAndPushNamed(context, HomeScreen.ROUTE,
+                    arguments: userData);
               },
               dense: true,
             ),
@@ -127,8 +127,14 @@ class _TransactionScreenState extends State<TransactionScreen>
       body: TabBarView(
         controller: _tabController,
         children: [
-          AddExpenseTab(email: userData.email),
-          AddRevenueTab(email: userData.email),
+          AddExpenseTab(
+            email: userData.email,
+            getAmountCallback: getUserAmount,
+          ),
+          AddRevenueTab(
+            email: userData.email,
+            getAmountCallback: getUserAmount,
+          ),
         ],
       ),
     );

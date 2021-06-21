@@ -53,7 +53,8 @@ class _HomeScreenState extends State<HomeScreen>
             ExpenseTable.columnTimestamp,
           ],
           where: '${UserTable.columnEmail} = ?',
-          whereArgs: [userData.email]);
+          whereArgs: [userData.email],
+          orderBy: '${ExpenseTable.columnTimestamp} desc');
       setState(() {
         amount = userAmount[0]['amount'].toString();
         expensesList = expenses;
@@ -116,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen>
                 size: 30,
               ),
               onTap: () {
-                Navigator.pushNamed(context, TransactionScreen.ROUTE,
+                Navigator.popAndPushNamed(context, TransactionScreen.ROUTE,
                     arguments: userData);
               },
               dense: true,
@@ -142,8 +143,10 @@ class _HomeScreenState extends State<HomeScreen>
         physics: NeverScrollableScrollPhysics(),
         children: [
           ExpenseViewTable(
-            expensesList: expensesList,
-          ),
+              expensesList: expensesList,
+              email: userData.email,
+              userAmount: amount,
+              getDataFromDB: getDataFromDB),
           Center(),
           Center(),
         ],

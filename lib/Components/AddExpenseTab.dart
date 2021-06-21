@@ -7,8 +7,11 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class AddExpenseTab extends StatefulWidget {
-  const AddExpenseTab({Key? key, required this.email}) : super(key: key);
+  const AddExpenseTab(
+      {Key? key, required this.email, required this.getAmountCallback})
+      : super(key: key);
   final String email;
+  final Function getAmountCallback;
   @override
   _AddExpenseTabState createState() => _AddExpenseTabState();
 }
@@ -54,6 +57,8 @@ class _AddExpenseTabState extends State<AddExpenseTab> {
             whereArgs: [email],
           );
         });
+        // Update User Amount
+        widget.getAmountCallback();
         // record creation returns a rowid as the primary key
         setState(() {
           showSpinner = false;
