@@ -1,9 +1,12 @@
 import 'package:cash_flow_app/Components/RoundButton.dart';
+import 'package:cash_flow_app/Components/UserData.dart';
+import 'package:cash_flow_app/DatabaseSchema.dart';
 import 'package:cash_flow_app/Screens/HomeScreen.dart';
 import 'package:cash_flow_app/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -19,15 +22,37 @@ class _SignupScreenState extends State<SignupScreen> {
   String name = '';
   String email = '';
   String password = '';
-  int amount = 0;
-
-  void onSignup() {
-    print(name);
-    print(email);
-  }
+  String amount = '0';
 
   @override
   Widget build(BuildContext context) {
+    void onSignup() async {
+      try {
+        var path = join((await getDatabasesPath()), 'expenses.db');
+        Database db = await UserTable.initializeDB(path);
+        var id = await db.insert(UserTable.tableName, {
+          UserTable.columnName: name,
+          UserTable.columnEmail: email,
+          UserTable.columnPassword: password,
+          UserTable.columnAmount: int.parse(amount)
+        });
+        print(id.toString());
+        setState(() {
+          showSpinner = false;
+          FocusScope.of(context).unfocus();
+          Navigator.of(context).pushNamed(HomeScreen.ROUTE,
+              arguments: UserData(email: email, name: name));
+        });
+      } catch (e) {
+        setState(() {
+          showSpinner = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Email Address Already Exists.')));
+        print(e);
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Sign Up'),
@@ -67,9 +92,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     hintText: 'Enter your name.',
                   ),
                   onChanged: (value) {
-                    setState(() {
-                      name = value;
-                    });
+                    name = value;
                   },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -114,7 +137,9 @@ class _SignupScreenState extends State<SignupScreen> {
                     labelText: 'Password',
                     hintText: 'Enter your password',
                   ),
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    password = value;
+                  },
                   validator: (value) {
                     if (value == null || value.isEmpty)
                       return 'Please Enter Password';
@@ -135,7 +160,9 @@ class _SignupScreenState extends State<SignupScreen> {
                     labelText: 'Initial Amount',
                     hintText: 'Enter the initial deposit in your account.',
                   ),
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    amount = value;
+                  },
                   validator: (value) {
                     if (value == null || value.isEmpty)
                       return 'Please Enter an Amount';
@@ -156,23 +183,12 @@ class _SignupScreenState extends State<SignupScreen> {
                   child: RoundButton(
                     color: Colors.blueAccent,
                     title: 'Sign Up',
-                    onPressed: () async {
+                    onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         setState(() {
                           showSpinner = true;
                         });
-                        try {
-                          onSignup();
-                          setState(() {
-                            showSpinner = false;
-                            Navigator.of(context).pushNamed(HomeScreen.ROUTE);
-                          });
-                        } catch (e) {
-                          setState(() {
-                            showSpinner = false;
-                          });
-                          print(e);
-                        }
+                        onSignup();
                       }
                     },
                   ),
