@@ -1,4 +1,5 @@
-import 'package:cash_flow_app/Components/DrawerHeader.dart';
+import 'package:cash_flow_app/Components/CustomDrawerHeader.dart';
+import 'package:cash_flow_app/Components/UserData.dart';
 import 'package:cash_flow_app/Screens/WelcomeScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -26,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    final userData = ModalRoute.of(context)!.settings.arguments as UserData;
     return Scaffold(
       appBar: AppBar(
         title: Text('Home'),
@@ -41,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen>
               text: 'Revenue',
             ),
             Tab(
-              text: 'Expenses & Revenue',
+              text: 'Summary',
             ),
           ],
         ),
@@ -50,7 +52,9 @@ class _HomeScreenState extends State<HomeScreen>
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            kDrawerHeader,
+            CustomDrawerHeader(
+              userData: userData,
+            ),
             ListTile(
               title: Text('Transaction Operations'),
               leading: Icon(
