@@ -1,5 +1,6 @@
 import 'package:cash_flow_app/Components/CustomDrawerHeader.dart';
 import 'package:cash_flow_app/Components/ExpenseViewTable.dart';
+import 'package:cash_flow_app/Components/RevenueViewTable.dart';
 import 'package:cash_flow_app/Components/UserData.dart';
 import 'package:cash_flow_app/DatabaseSchema.dart';
 import 'package:cash_flow_app/Screens/TransactionScreen.dart';
@@ -24,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -41,10 +42,13 @@ class _HomeScreenState extends State<HomeScreen>
       var path = join((await getDatabasesPath()), 'expenses.db');
       // Initialize DB UserTable static method
       Database db = await initializeDB(path);
+      // Get User Net Amount
       var userAmount = await db.query(UserTable.tableName,
           columns: [UserTable.columnAmount],
           where: '${UserTable.columnEmail} = ?',
           whereArgs: [userData.email]);
+      // Get Expenses Records
+
       List expenses = await db.query(ExpenseTable.tableName,
           columns: [
             'rowid',
@@ -55,9 +59,21 @@ class _HomeScreenState extends State<HomeScreen>
           where: '${UserTable.columnEmail} = ?',
           whereArgs: [userData.email],
           orderBy: '${ExpenseTable.columnTimestamp} desc');
+      // Get Revenue Records
+      List revenues = await db.query(RevenueTable.tableName,
+          columns: [
+            'rowid',
+            RevenueTable.columnTitle,
+            RevenueTable.columnAmount,
+            RevenueTable.columnTimestamp,
+          ],
+          where: '${UserTable.columnEmail} = ?',
+          whereArgs: [userData.email],
+          orderBy: '${ExpenseTable.columnTimestamp} desc');
       setState(() {
         amount = userAmount[0]['amount'].toString();
         expensesList = expenses;
+        revenuesList = revenues;
       });
     }
 
@@ -95,9 +111,6 @@ class _HomeScreenState extends State<HomeScreen>
             ),
             Tab(
               text: 'Revenue',
-            ),
-            Tab(
-              text: 'Summary',
             ),
           ],
         ),
@@ -147,8 +160,11 @@ class _HomeScreenState extends State<HomeScreen>
               email: userData.email,
               userAmount: amount,
               getDataFromDB: getDataFromDB),
-          Center(),
-          Center(),
+          RevenueViewTable(
+              revenuesList: revenuesList,
+              email: userData.email,
+              userAmount: amount,
+              getDataFromDB: getDataFromDB),
         ],
       ),
     );
