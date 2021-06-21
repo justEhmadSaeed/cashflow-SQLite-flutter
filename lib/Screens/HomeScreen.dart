@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen>
               text: 'Revenue',
             ),
             Tab(
-              text: 'Revenue',
+              text: 'Expenses & Revenue',
             ),
           ],
         ),
@@ -52,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen>
           children: [
             kDrawerHeader,
             ListTile(
-              title: Text('Input & Selections'),
+              title: Text('Transaction Operations'),
               leading: Icon(
                 Icons.visibility,
                 color: Colors.blueAccent,

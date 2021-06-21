@@ -3,6 +3,7 @@ import 'package:cash_flow_app/Screens/HomeScreen.dart';
 import 'package:cash_flow_app/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:sqflite/sqflite.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -15,6 +16,16 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
   bool showSpinner = false;
+  String name = '';
+  String email = '';
+  String password = '';
+  int amount = 0;
+
+  void onSignup() {
+    print(name);
+    print(email);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,12 +35,13 @@ class _SignupScreenState extends State<SignupScreen> {
       ),
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
-        child: Padding(
+        child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 24),
           child: Form(
             key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 SizedBox(
@@ -49,13 +61,16 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 TextFormField(
                   keyboardType: TextInputType.name,
-                  textAlign: TextAlign.center,
                   decoration: kTextFieldDecoration.copyWith(
                     prefixIcon: Icon(Icons.badge),
                     labelText: 'Name',
                     hintText: 'Enter your name.',
                   ),
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    setState(() {
+                      name = value;
+                    });
+                  },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please Enter your Name';
@@ -68,13 +83,14 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
-                  textAlign: TextAlign.center,
                   decoration: kTextFieldDecoration.copyWith(
                     prefixIcon: Icon(Icons.alternate_email),
                     labelText: 'Email Address',
                     hintText: 'Enter your email address',
                   ),
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    email = value;
+                  },
                   validator: (value) {
                     if (value == null || value.isEmpty)
                       return 'Please Enter Email Address';
@@ -93,7 +109,6 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 TextFormField(
                   obscureText: true,
-                  textAlign: TextAlign.center,
                   decoration: kTextFieldDecoration.copyWith(
                     prefixIcon: Icon(Icons.lock),
                     labelText: 'Password',
@@ -113,8 +128,8 @@ class _SignupScreenState extends State<SignupScreen> {
                   height: 8.0,
                 ),
                 TextFormField(
-                  textAlign: TextAlign.center,
                   keyboardType: TextInputType.number,
+                  initialValue: '0',
                   decoration: kTextFieldDecoration.copyWith(
                     prefixIcon: Icon(Icons.attach_money),
                     labelText: 'Initial Amount',
@@ -147,6 +162,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           showSpinner = true;
                         });
                         try {
+                          onSignup();
                           setState(() {
                             showSpinner = false;
                             Navigator.of(context).pushNamed(HomeScreen.ROUTE);

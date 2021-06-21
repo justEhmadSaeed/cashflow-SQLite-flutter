@@ -16,7 +16,7 @@ class WelcomeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Hero(
                   tag: 'logo',
@@ -28,7 +28,7 @@ class WelcomeScreen extends StatelessWidget {
                 AnimatedTextKit(
                   animatedTexts: [
                     TypewriterAnimatedText(
-                      'Expense Flow App',
+                      'Expense Flow',
                       textStyle: TextStyle(
                         fontSize: 35.0,
                         fontWeight: FontWeight.w900,

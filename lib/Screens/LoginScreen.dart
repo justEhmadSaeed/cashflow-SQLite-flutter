@@ -24,7 +24,7 @@ class _SignupScreenState extends State<LoginScreen> {
       ),
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
-        child: Padding(
+        child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 24),
           child: Form(
             key: _formKey,
@@ -45,11 +45,10 @@ class _SignupScreenState extends State<LoginScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: 8.0,
+                  height: 48.0,
                 ),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
-                  textAlign: TextAlign.center,
                   decoration: kTextFieldDecoration.copyWith(
                     prefixIcon: Icon(Icons.alternate_email),
                     labelText: 'Email Address',
@@ -74,7 +73,6 @@ class _SignupScreenState extends State<LoginScreen> {
                 ),
                 TextFormField(
                   obscureText: true,
-                  textAlign: TextAlign.center,
                   decoration: kTextFieldDecoration.copyWith(
                     prefixIcon: Icon(Icons.lock),
                     labelText: 'Password',
