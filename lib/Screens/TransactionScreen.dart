@@ -1,10 +1,13 @@
 import 'package:cash_flow_app/Components/AddExpenseTab.dart';
-import 'package:cash_flow_app/Components/AddRevenue.dart';
+import 'package:cash_flow_app/Components/AddRevenueTab.dart';
 import 'package:cash_flow_app/Components/CustomDrawerHeader.dart';
 import 'package:cash_flow_app/Components/UserData.dart';
+import 'package:cash_flow_app/DatabaseSchema.dart';
 import 'package:cash_flow_app/Screens/HomeScreen.dart';
 import 'package:cash_flow_app/Screens/WelcomeScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
 class TransactionScreen extends StatefulWidget {
   static const ROUTE = '/TRANSACTIONS';
@@ -22,6 +25,7 @@ class _TransactionScreenState extends State<TransactionScreen>
     _tabController = TabController(length: 2, vsync: this);
   }
 
+  String amount = '';
   @override
   void dispose() {
     _tabController.dispose();
@@ -32,11 +36,45 @@ class _TransactionScreenState extends State<TransactionScreen>
   Widget build(BuildContext context) {
     // Get arguments from Navigation Route
     final userData = ModalRoute.of(context)!.settings.arguments as UserData;
+    void getUserAmount() async {
+      // Get device path of the database
+      var path = join((await getDatabasesPath()), 'expenses.db');
+      // Initialize DB UserTable static method
+      Database db = await initializeDB(path);
+      var userAmount = await db.query(UserTable.tableName,
+          columns: [UserTable.columnAmount],
+          where: '${UserTable.columnEmail} = ?',
+          whereArgs: [userData.email]);
+      setState(() {
+        amount = userAmount[0]['amount'].toString();
+      });
+    }
 
+    getUserAmount();
     return Scaffold(
       appBar: AppBar(
         title: Text('Transaction Operations'),
         backgroundColor: Colors.blueAccent,
+        actions: [
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child: amount.length > 0
+                  ? Text(
+                      '\$$amount',
+                      style: TextStyle(
+                          fontSize: 25,
+                          color: double.parse(amount) < 0
+                              ? Colors.redAccent[700]
+                              : Colors.greenAccent[400],
+                          fontWeight: FontWeight.bold),
+                    )
+                  : CircularProgressIndicator(
+                      color: Colors.greenAccent[400],
+                    ),
+            ),
+          )
+        ],
         bottom: TabBar(
           controller: _tabController,
           indicatorColor: Colors.white,
