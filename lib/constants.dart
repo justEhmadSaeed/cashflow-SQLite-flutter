@@ -14,4 +14,12 @@ const kTextFieldDecoration = InputDecoration(
     borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
     borderRadius: BorderRadius.all(Radius.circular(32.0)),
   ),
+  errorStyle: TextStyle(fontSize: 18),
 );
+
+const kTabViewHeadingStyle = TextStyle(
+  fontSize: 25,
+  fontStyle: FontStyle.italic,
+  fontWeight: FontWeight.bold,
+);
+const kRoundButtonTextStyle = TextStyle(fontSize: 20);

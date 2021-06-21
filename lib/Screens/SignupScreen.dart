@@ -27,15 +27,21 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     void onSignup() async {
+      Database db;
       try {
+        // Get device path of the database
         var path = join((await getDatabasesPath()), 'expenses.db');
-        Database db = await UserTable.initializeDB(path);
+        // Initialize DB UserTable static method
+        db = await initializeDB(path);
+        // Insert Record using helper function
         var id = await db.insert(UserTable.tableName, {
           UserTable.columnName: name,
           UserTable.columnEmail: email,
           UserTable.columnPassword: password,
           UserTable.columnAmount: int.parse(amount)
         });
+        db.close();
+        // record creation returns a rowid as the primary key
         print(id.toString());
         setState(() {
           showSpinner = false;
@@ -185,6 +191,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     title: 'Sign Up',
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
+                        // if form is validated successfully,
+                        // show loading spinner and call signup method
                         setState(() {
                           showSpinner = true;
                         });

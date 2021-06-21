@@ -1,23 +1,25 @@
+import 'package:cash_flow_app/Components/AddExpenseTab.dart';
+import 'package:cash_flow_app/Components/AddRevenue.dart';
 import 'package:cash_flow_app/Components/CustomDrawerHeader.dart';
 import 'package:cash_flow_app/Components/UserData.dart';
-import 'package:cash_flow_app/Screens/TransactionScreen.dart';
+import 'package:cash_flow_app/Screens/HomeScreen.dart';
 import 'package:cash_flow_app/Screens/WelcomeScreen.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
-  static const ROUTE = '/HOME';
+class TransactionScreen extends StatefulWidget {
+  static const ROUTE = '/TRANSACTIONS';
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _TransactionScreenState createState() => _TransactionScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
+class _TransactionScreenState extends State<TransactionScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -28,10 +30,12 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    // Get arguments from Navigation Route
     final userData = ModalRoute.of(context)!.settings.arguments as UserData;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: Text('Transaction Operations'),
         backgroundColor: Colors.blueAccent,
         bottom: TabBar(
           controller: _tabController,
@@ -42,9 +46,6 @@ class _HomeScreenState extends State<HomeScreen>
             ),
             Tab(
               text: 'Revenue',
-            ),
-            Tab(
-              text: 'Summary',
             ),
           ],
         ),
@@ -57,15 +58,15 @@ class _HomeScreenState extends State<HomeScreen>
               userData: userData,
             ),
             ListTile(
-              title: Text('Transaction Operations'),
+              title: Text('Home'),
               leading: Icon(
-                Icons.edit,
+                Icons.visibility,
                 color: Colors.blueAccent,
                 size: 30,
               ),
               onTap: () {
-                Navigator.pushNamed(context, TransactionScreen.ROUTE,
-                    arguments: userData);
+                Navigator.popUntil(
+                    context, ModalRoute.withName(HomeScreen.ROUTE));
               },
               dense: true,
             ),
@@ -88,9 +89,8 @@ class _HomeScreenState extends State<HomeScreen>
       body: TabBarView(
         controller: _tabController,
         children: [
-          Center(),
-          Center(),
-          Center(),
+          AddExpenseTab(email: userData.email),
+          AddRevenueTab(email: userData.email),
         ],
       ),
     );

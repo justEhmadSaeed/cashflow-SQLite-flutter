@@ -24,16 +24,18 @@ class _SignupScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     void onLogin() async {
+      Database db;
       try {
         var path = join((await getDatabasesPath()), 'expenses.db');
-        Database db = await UserTable.initializeDB(path);
+        db = await initializeDB(path);
         var name = await db.query(
           UserTable.tableName,
           columns: [UserTable.columnName],
-          // where:
-          //     '${UserTable.columnEmail} = ? AND ${UserTable.columnPassword} = ?',
-          // whereArgs: [email, password],
+          where:
+              '${UserTable.columnEmail} = ? AND ${UserTable.columnPassword} = ?',
+          whereArgs: [email, password],
         );
+        db.close();
         print(name);
         if (name.length < 1)
           throw Exception();
@@ -41,6 +43,7 @@ class _SignupScreenState extends State<LoginScreen> {
           setState(() {
             showSpinner = false;
             FocusScope.of(context).unfocus();
+
             Navigator.of(context).pushNamed(
               HomeScreen.ROUTE,
               arguments: UserData(

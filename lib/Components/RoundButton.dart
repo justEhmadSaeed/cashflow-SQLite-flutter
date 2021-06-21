@@ -1,3 +1,4 @@
+import 'package:cash_flow_app/constants.dart';
 import 'package:flutter/material.dart';
 
 class RoundButton extends StatelessWidget {
@@ -26,6 +27,7 @@ class RoundButton extends StatelessWidget {
           height: 50.0,
           child: Text(
             title,
+            style: kRoundButtonTextStyle,
           ),
         ),
       ),

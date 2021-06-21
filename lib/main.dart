@@ -1,6 +1,7 @@
 import 'package:cash_flow_app/Screens/HomeScreen.dart';
 import 'package:cash_flow_app/Screens/LoginScreen.dart';
 import 'package:cash_flow_app/Screens/SignupScreen.dart';
+import 'package:cash_flow_app/Screens/TransactionScreen.dart';
 import 'package:cash_flow_app/Screens/WelcomeScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
         SignupScreen.ROUTE: (context) => SignupScreen(),
         LoginScreen.ROUTE: (context) => LoginScreen(),
         HomeScreen.ROUTE: (context) => HomeScreen(),
+        TransactionScreen.ROUTE: (context) => TransactionScreen(),
       },
     );
   }
