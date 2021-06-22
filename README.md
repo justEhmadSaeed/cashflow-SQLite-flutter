@@ -1,16 +1,6 @@
-# Cash Flow App
+# ⚡ Cash Flow App
 
-A new Flutter project.
+An expense tracking app made with Flutter and SQLite that offers user authentication and allows them to perform CRUD operations on expenses and revenues.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## ⏮Preview
+![cash-flow](https://user-images.githubusercontent.com/46846821/122861195-746f1b80-d338-11eb-886e-dc66035c2127.gif)
