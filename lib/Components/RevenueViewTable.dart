@@ -28,15 +28,6 @@ class _RevenueViewTableState extends State<RevenueViewTable> {
   DateTime? endingTime;
   @override
   Widget build(BuildContext context) {
-    if (widget.revenuesList.isEmpty)
-      return Center(
-        child: Container(
-          height: 100,
-          width: 100,
-          child: CircularProgressIndicator(),
-        ),
-      );
-
     List filteredList = new List.from(widget.revenuesList);
     // If Starting time selected, show transactions after starting time
     if (startingTime != null)

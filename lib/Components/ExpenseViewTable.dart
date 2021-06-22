@@ -28,14 +28,6 @@ class _ExpenseViewTableState extends State<ExpenseViewTable> {
   DateTime? endingTime;
   @override
   Widget build(BuildContext context) {
-    if (widget.expensesList.isEmpty)
-      return Center(
-        child: Container(
-          height: 100,
-          width: 100,
-          child: CircularProgressIndicator(),
-        ),
-      );
     List filteredList = new List.from(widget.expensesList);
     // If Starting time selected, show transactions after starting time
     if (startingTime != null)
